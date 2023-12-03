@@ -12,6 +12,10 @@ const SignUpPage : NextPage = () => {
         <div className="flex flex-col">
           <a className="text-xl">会員登録</a>
           <div className="flex my-2 flex-col">
+            <label htmlFor="user-name">ユーザー名</label>
+            <input type="email" id="email-address" name="email-address" required></input>
+          </div>
+          <div className="flex my-2 flex-col">
             <label htmlFor="email-address">メールアドレス</label>
             <input type="email" id="email-address" name="email-address" required></input>
           </div>
