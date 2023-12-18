@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ArticleType {
+  Question
+  Answer
+}
+
+model Users {
+  userName    String       @id
+  mailAddress String       @unique
+  password    String
+  profile     String       @default("")
+  alive       Boolean      @default(true)
+  Articles    Articles[]
+  Evaluation  Evaluation[]
+  Comments    Comments[]
+  BookMarks   BookMarks[]
+}
+
+model Questions {
+  questionId     String           @id @default(uuid())
+  title          String
+  viewNumber     Int              @default(0)
+  restricted     Boolean
+  Articles       Articles[]
+  BookMarks      BookMarks[]
+  QuestionToTags QuestionToTags[]
+}
+
+model Articles {
+  articleId   String       @id @default(uuid())
+  question    Questions    @relation(fields: [questionId], references: [questionId])
+  questionId  String
+  user        Users        @relation(fields: [userName], references: [userName])
+  userName    String
+  articleType ArticleType
+  atricle     String
+  postDate    DateTime     @default(now())
+  updatedDate DateTime     @updatedAt
+  Evaluation  Evaluation[]
+  Comments    Comments[]
+  Images      Images[]
+}
+
+model Evaluation {
+  user       Users    @relation(fields: [userName], references: [userName])
+  userName   String
+  article    Articles @relation(fields: [articleId], references: [articleId])
+  articleId  String
+  evaluation Int      @default(0)
+
+  @@id([userName, articleId])
+}
+
+model Comments {
+  commentId   String   @id @default(uuid())
+  user        Users    @relation(fields: [userName], references: [userName])
+  userName    String
+  article     Articles @relation(fields: [articleId], references: [articleId])
+  articleId   String
+  comment     String
+  commentDate DateTime @default(now())
+  updatedDate DateTime @updatedAt
+}
+
+model BookMarks {
+  user       Users     @relation(fields: [userName], references: [userName])
+  userName   String
+  question   Questions @relation(fields: [questionId], references: [questionId])
+  questionId String
+
+  @@id([userName, questionId])
+}
+
+model Tags {
+  tagId          String           @id @default(uuid())
+  name           String
+  QuestionToTags QuestionToTags[]
+}
+
+model QuestionToTags {
+  question   Questions @relation(fields: [questionId], references: [questionId])
+  questionId String
+  tag        Tags      @relation(fields: [tagId], references: [tagId])
+  tagId      String
+
+  @@id([questionId, tagId])
+}
+
+model Images {
+  imageId   String   @id @default(uuid())
+  article   Articles @relation(fields: [articleId], references: [articleId])
+  articleId String
+  place     String
+}

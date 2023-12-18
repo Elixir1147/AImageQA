@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import {Metadata} from 'next';
-import Header from '@/components/header';
+import Header from '@/_components/header';
 export const metadata:Metadata ={
   title: "Image-Share",
 }
