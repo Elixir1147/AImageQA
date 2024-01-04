@@ -15,91 +15,91 @@ enum ArticleType {
   Answer
 }
 
-model Users {
+model User {
   userName    String       @id
   mailAddress String       @unique
   password    String
   profile     String       @default("")
   alive       Boolean      @default(true)
-  Articles    Articles[]
+  Articles    Article[]
   Evaluation  Evaluation[]
-  Comments    Comments[]
-  BookMarks   BookMarks[]
+  Comments    Comment[]
+  BookMarks   BookMark[]
 }
 
-model Questions {
-  questionId     String           @id @default(uuid()) @db.Uuid
+model Question {
+  questionId     String          @id @default(uuid()) @db.Uuid
   title          String
-  viewNumber     Int              @default(0)
+  viewNumber     Int             @default(0)
   restricted     Boolean
-  Articles       Articles[]
-  BookMarks      BookMarks[]
-  QuestionToTags QuestionToTags[]
+  Articles       Article[]
+  BookMarks      BookMark[]
+  QuestionToTags QuestionToTag[]
 }
 
-model Articles {
+model Article {
   articleId   String       @id @default(uuid()) @db.Uuid
-  question    Questions    @relation(fields: [questionId], references: [questionId])
+  question    Question     @relation(fields: [questionId], references: [questionId])
   questionId  String       @db.Uuid
-  user        Users        @relation(fields: [userName], references: [userName])
+  user        User         @relation(fields: [userName], references: [userName])
   userName    String
   articleType ArticleType
   atricle     String
   postDate    DateTime     @default(now())
   updatedDate DateTime     @updatedAt
   Evaluation  Evaluation[]
-  Comments    Comments[]
-  Images      Images[]
+  Comments    Comment[]
+  Images      Image[]
 }
 
 model Evaluation {
-  user       Users    @relation(fields: [userName], references: [userName])
+  user       User    @relation(fields: [userName], references: [userName])
   userName   String
-  article    Articles @relation(fields: [articleId], references: [articleId])
-  articleId  String   @db.Uuid
-  evaluation Int      @default(0)
+  article    Article @relation(fields: [articleId], references: [articleId])
+  articleId  String  @db.Uuid
+  evaluation Int     @default(0)
 
   @@id([userName, articleId])
 }
 
-model Comments {
+model Comment {
   commentId   String   @id @default(uuid()) @db.Uuid
-  user        Users    @relation(fields: [userName], references: [userName])
+  user        User     @relation(fields: [userName], references: [userName])
   userName    String
-  article     Articles @relation(fields: [articleId], references: [articleId])
+  article     Article  @relation(fields: [articleId], references: [articleId])
   articleId   String   @db.Uuid
   comment     String
   commentDate DateTime @default(now())
   updatedDate DateTime @updatedAt
 }
 
-model BookMarks {
-  user       Users     @relation(fields: [userName], references: [userName])
+model BookMark {
+  user       User     @relation(fields: [userName], references: [userName])
   userName   String
-  question   Questions @relation(fields: [questionId], references: [questionId])
-  questionId String    @db.Uuid
+  question   Question @relation(fields: [questionId], references: [questionId])
+  questionId String   @db.Uuid
 
   @@id([userName, questionId])
 }
 
-model Tags {
-  tagId          String           @id @default(uuid()) @db.Uuid
+model Tag {
+  tagId          String          @id @default(uuid()) @db.Uuid
   name           String
-  QuestionToTags QuestionToTags[]
+  QuestionToTags QuestionToTag[]
 }
 
-model QuestionToTags {
-  question   Questions @relation(fields: [questionId], references: [questionId])
-  questionId String    @db.Uuid
-  tag        Tags      @relation(fields: [tagId], references: [tagId])
-  tagId      String    @db.Uuid
+model QuestionToTag {
+  question   Question @relation(fields: [questionId], references: [questionId])
+  questionId String   @db.Uuid
+  tag        Tag      @relation(fields: [tagId], references: [tagId])
+  tagId      String   @db.Uuid
 
   @@id([questionId, tagId])
 }
 
-model Images {
-  imageId   String   @id @default(uuid()) @db.Uuid
-  article   Articles @relation(fields: [articleId], references: [articleId])
-  articleId String   @db.Uuid
+model Image {
+  imageId   String  @id @default(uuid()) @db.Uuid
+  article   Article @relation(fields: [articleId], references: [articleId])
+  articleId String  @db.Uuid
   place     String
 }
