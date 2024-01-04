@@ -2,6 +2,7 @@
 import { Metadata } from 'next';
 import { registerUser } from '@/lib/registerUser';
 import { useFormState } from 'react-dom'
+import Header from '@/_components/header';
 
 export const metadata:Metadata = {
   title: 'Sign Up',
@@ -10,6 +11,7 @@ export const metadata:Metadata = {
 export default function SignUpPage(props:{onClickFunction:()=>Promise<void>}): JSX.Element{
   return (
     <main>
+      <Header/>
       <div className="flex h-screen justify-center items-center">
         <form className="flex flex-col" action={async(formData)=>{
           const message= await registerUser(formData);
