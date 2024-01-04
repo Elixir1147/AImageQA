@@ -19,9 +19,14 @@ export async function registerUser(formData: FormData):Promise<{message:string}|
         userName:userName
       }
     })
-    if(sameUserName !== null){
+    const sameMailAddress = await prisma.user.findUnique({
+      where:{
+        mailAddress:mailAddress
+      }
+    })
+    if(sameMailAddress !== null){
       return {
-        message:"同じユーザー名が存在しています．"
+        message:"同じメールアドレスが使用されています．"
       }
     }
     const hashedPassword = await bcrypt.hash(password,10)
