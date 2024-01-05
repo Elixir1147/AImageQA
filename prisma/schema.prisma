@@ -16,7 +16,8 @@ enum ArticleType {
 }
 
 model User {
-  userName    String       @id
+  id          String       @id @unique
+  userName    String       @unique
   mailAddress String       @unique
   password    String
   profile     String       @default("")
@@ -25,6 +26,8 @@ model User {
   Evaluation  Evaluation[]
   Comments    Comment[]
   BookMarks   BookMark[]
+  Session     Session[]
+  Key         Key[]
 }
 
 model Question {
@@ -102,4 +105,23 @@ model Image {
   article   Article @relation(fields: [articleId], references: [articleId])
   articleId String  @db.Uuid
   place     String
+}
+
+model Session {
+  id             String @id @unique
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  user           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model Key {
+  id              String  @id @unique
+  hashed_password String?
+  user_id         String
+  user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
 }
