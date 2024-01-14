@@ -1,19 +1,24 @@
 'use client'
-import { Metadata } from 'next';
+
 import { registerUser } from '@/lib/registerUser';
-import { useFormState } from 'react-dom'
 import Header from '@/_components/header';
+import {auth} from "@/auth/lucia"
+import * as context from "next/headers"
+import {redirect} from "next/navigation"
 
-export const metadata:Metadata = {
-  title: 'Sign Up',
-}
+export default async function SignUpPage(): Promise<JSX.Element | void>{
+  
+  const authRequest = auth.handleRequest("GET",context)
+  const session = await authRequest.validate()
+  if(session){
+    redirect("/")
+  }
 
-export default function SignUpPage(props:{onClickFunction:()=>Promise<void>}): JSX.Element{
   return (
     <main>
       <Header/>
       <div className="flex h-screen justify-center items-center">
-        <form className="flex flex-col" action={async(formData)=>{
+        <form className="flex flex-col" method="post" action={async(formData)=>{
           const message= await registerUser(formData);
           if(typeof message !== 'undefined'){
             window.alert(message.message)

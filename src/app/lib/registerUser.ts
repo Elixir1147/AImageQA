@@ -1,9 +1,13 @@
 'use server';
+import {auth} from "@/auth/lucia"
 import {prisma} from '@/lib/exportPrismaClient'
-import bcrypt from 'bcrypt'
 import { userSchema } from './zodSchema'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import * as context from 'next/headers'
+import { ZodError } from 'zod';
+import { LuciaError } from 'lucia';
+
 
 export async function registerUser(formData: FormData):Promise<{message:string}|void>{
   console.log(formData)
@@ -19,6 +23,11 @@ export async function registerUser(formData: FormData):Promise<{message:string}|
         userName:userName
       }
     })
+    if(sameUserName !== null){
+      return {
+        message:"同じユーザ名が使用されています．"
+      }
+    }
     const sameMailAddress = await prisma.user.findUnique({
       where:{
         mailAddress:mailAddress
@@ -29,20 +38,41 @@ export async function registerUser(formData: FormData):Promise<{message:string}|
         message:"同じメールアドレスが使用されています．"
       }
     }
-    const hashedPassword = await bcrypt.hash(password,10)
-    await prisma.user.create({
-      data:{
-        userName: userName,
-        mailAddress: mailAddress,
-        password: hashedPassword 
+    const user = await auth.createUser({
+      key:{
+        providerId: "mailAddress",
+        providerUserId: mailAddress.toLowerCase(),
+        password,
+      },
+      attributes:{
+        userName,
+        mailAddress
       }
     })
-  }catch(err){
-    if(err instanceof Error){
-      console.log(err.message)
-    }
-    return {
-      message: "unknown error is occured."
+    const session = await auth.createSession({
+      userId: user.userId,
+      attributes: {}
+    })
+    const authRequest = auth.handleRequest("POST", context)
+    authRequest.setSession(session)
+
+  }catch(e){
+    if (e instanceof ZodError){
+      return {
+        message: 'unexpected data is submited.'
+      }
+    }else if(e instanceof LuciaError){
+      return {
+        message: ''
+      }
+    }else if (e instanceof Error){
+      return {
+        message: ''
+      }
+    }else{
+      return {
+        message: 'unknown error is occured'
+      }
     }
   }
   revalidatePath('/')

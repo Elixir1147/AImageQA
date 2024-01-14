@@ -19,15 +19,20 @@ model User {
   id          String       @id @unique
   userName    String       @unique
   mailAddress String       @unique
-  password    String
-  profile     String       @default("")
-  alive       Boolean      @default(true)
   Articles    Article[]
   Evaluation  Evaluation[]
   Comments    Comment[]
   BookMarks   BookMark[]
   Session     Session[]
   Key         Key[]
+  UserData    UserData[]
+}
+
+model UserData {
+  userName String  @id
+  user     User    @relation(fields: [userName], references: [userName])
+  profile  String  @default("")
+  alive    Boolean @default(true)
 }
 
 model Question {
