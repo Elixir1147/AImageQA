@@ -15,91 +15,118 @@ enum ArticleType {
   Answer
 }
 
-model Users {
-  userName    String       @id
+model User {
+  id          String       @id @unique
+  userName    String       @unique
   mailAddress String       @unique
-  password    String
-  profile     String       @default("")
-  alive       Boolean      @default(true)
-  Articles    Articles[]
+  Articles    Article[]
   Evaluation  Evaluation[]
-  Comments    Comments[]
-  BookMarks   BookMarks[]
+  Comments    Comment[]
+  BookMarks   BookMark[]
+  Session     Session[]
+  Key         Key[]
+  UserData    UserData[]
 }
 
-model Questions {
-  questionId     String           @id @default(uuid())
+model UserData {
+  userName String  @id
+  user     User    @relation(fields: [userName], references: [userName])
+  profile  String  @default("")
+  alive    Boolean @default(true)
+}
+
+model Question {
+  questionId     String          @id @default(uuid()) @db.Uuid
   title          String
-  viewNumber     Int              @default(0)
+  viewNumber     Int             @default(0)
   restricted     Boolean
-  Articles       Articles[]
-  BookMarks      BookMarks[]
-  QuestionToTags QuestionToTags[]
+  Articles       Article[]
+  BookMarks      BookMark[]
+  QuestionToTags QuestionToTag[]
 }
 
-model Articles {
-  articleId   String       @id @default(uuid())
-  question    Questions    @relation(fields: [questionId], references: [questionId])
-  questionId  String
-  user        Users        @relation(fields: [userName], references: [userName])
+model Article {
+  articleId   String       @id @default(uuid()) @db.Uuid
+  question    Question     @relation(fields: [questionId], references: [questionId])
+  questionId  String       @db.Uuid
+  user        User         @relation(fields: [userName], references: [userName])
   userName    String
   articleType ArticleType
   atricle     String
   postDate    DateTime     @default(now())
   updatedDate DateTime     @updatedAt
   Evaluation  Evaluation[]
-  Comments    Comments[]
-  Images      Images[]
+  Comments    Comment[]
+  Images      Image[]
 }
 
 model Evaluation {
-  user       Users    @relation(fields: [userName], references: [userName])
+  user       User    @relation(fields: [userName], references: [userName])
   userName   String
-  article    Articles @relation(fields: [articleId], references: [articleId])
-  articleId  String
-  evaluation Int      @default(0)
+  article    Article @relation(fields: [articleId], references: [articleId])
+  articleId  String  @db.Uuid
+  evaluation Int     @default(0)
 
   @@id([userName, articleId])
 }
 
-model Comments {
-  commentId   String   @id @default(uuid())
-  user        Users    @relation(fields: [userName], references: [userName])
+model Comment {
+  commentId   String   @id @default(uuid()) @db.Uuid
+  user        User     @relation(fields: [userName], references: [userName])
   userName    String
-  article     Articles @relation(fields: [articleId], references: [articleId])
-  articleId   String
+  article     Article  @relation(fields: [articleId], references: [articleId])
+  articleId   String   @db.Uuid
   comment     String
   commentDate DateTime @default(now())
   updatedDate DateTime @updatedAt
 }
 
-model BookMarks {
-  user       Users     @relation(fields: [userName], references: [userName])
+model BookMark {
+  user       User     @relation(fields: [userName], references: [userName])
   userName   String
-  question   Questions @relation(fields: [questionId], references: [questionId])
-  questionId String
+  question   Question @relation(fields: [questionId], references: [questionId])
+  questionId String   @db.Uuid
 
   @@id([userName, questionId])
 }
 
-model Tags {
-  tagId          String           @id @default(uuid())
+model Tag {
+  tagId          String          @id @default(uuid()) @db.Uuid
   name           String
-  QuestionToTags QuestionToTags[]
+  QuestionToTags QuestionToTag[]
 }
 
-model QuestionToTags {
-  question   Questions @relation(fields: [questionId], references: [questionId])
-  questionId String
-  tag        Tags      @relation(fields: [tagId], references: [tagId])
-  tagId      String
+model QuestionToTag {
+  question   Question @relation(fields: [questionId], references: [questionId])
+  questionId String   @db.Uuid
+  tag        Tag      @relation(fields: [tagId], references: [tagId])
+  tagId      String   @db.Uuid
 
   @@id([questionId, tagId])
 }
 
-model Images {
-  imageId   String   @id @default(uuid())
-  article   Articles @relation(fields: [articleId], references: [articleId])
-  articleId String
+model Image {
+  imageId   String  @id @default(uuid()) @db.Uuid
+  article   Article @relation(fields: [articleId], references: [articleId])
+  articleId String  @db.Uuid
   place     String
+}
+
+model Session {
+  id             String @id @unique
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  user           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model Key {
+  id              String  @id @unique
+  hashed_password String?
+  user_id         String
+  user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
 }
