@@ -1,29 +1,54 @@
 'use client'
-
-import { registerUser } from '@/lib/registerUser';
 import Header from '@/_components/header';
-import {auth} from "@/auth/lucia"
-import * as context from "next/headers"
-import {redirect} from "next/navigation"
+import { redirect } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/macro';
+import { revalidatePath } from 'next/cache';
+import { useEffect } from 'react';
+import { NextResponse } from 'next/server';
+import { Session } from 'lucia';
 
-export default async function SignUpPage(): Promise<JSX.Element | void>{
-  
-  const authRequest = auth.handleRequest("GET",context)
-  const session = await authRequest.validate()
-  if(session){
-    redirect("/")
-  }
 
+export default async function SignUpPage(): Promise<JSX.Element|void>{
+  useEffect(()=>{
+    (async ()=>{
+      const res = await fetch(API_BASE_URL+'/api/session',{method: 'GET'})
+      const resJson = await res.json()
+      console.debug('useEffect')
+      console.debug(resJson)
+      if(resJson.session){
+        revalidatePath('/')
+        redirect('/')
+      }
+    })()
+  },[])
   return (
     <main>
       <Header/>
       <div className="flex h-screen justify-center items-center">
         <form className="flex flex-col" method="post" action={async(formData)=>{
-          const message= await registerUser(formData);
-          if(typeof message !== 'undefined'){
-            window.alert(message.message)
-            console.debug(message.message)
-          }
+          // const message= await registerUser(formData)
+          // if(typeof message !== 'undefined'){
+          //   window.alert(message.message)
+          //   console.debug(message.message)
+          // }
+          // revalidatePath('/')
+          // redirect('/')
+            const res = await fetch(
+                API_BASE_URL+'/api/signup',
+                {
+                  method:'POST',
+                  body:formData
+                }
+              );
+            console.debug('form')
+            console.debug(res)
+            if(res.status === 200){
+              revalidatePath('/')
+              redirect('/')
+            }else{
+              window.alert(await res.text())
+              console.debug(res.status)
+            }
         }}>
           <a className="text-xl">会員登録</a>
           <div className="flex my-2 flex-col">
@@ -44,30 +69,3 @@ export default async function SignUpPage(): Promise<JSX.Element | void>{
     </main>
   );
 }
-
-// export function getStaticProps():{props:{onClickFunction:()=>Promise<void>}}{
-//   const onClickFunction = async()=>{
-//     console.debug("onclick is called")
-//     const userName=document.getElementById("user-name")
-//     const mailAddress=document.getElementById("email-address")
-//     const password=document.getElementById("password")
-//     if(userName!==null && mailAddress!==null && password!==null){
-//       await fetch(
-//         "http://localhost:3000/users",{
-//           method:"POST",
-//           body:JSON.stringify({
-//             userName: (userName as HTMLInputElement).value,
-//             mailAddress: (mailAddress as HTMLInputElement).value,
-//             password: (password as HTMLInputElement).value,
-//           })
-//         }
-//       )
-//     }
-//   }
-  
-//   return {
-//     props: {
-//       onClickFunction,
-//     }
-//   }
-// }

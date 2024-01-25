@@ -1,7 +1,7 @@
 import {lucia} from 'lucia'
 import {nextjs_future} from 'lucia/middleware'
 import {prisma} from '@lucia-auth/adapter-prisma'
-import {prisma as client} from '@/lib/exportPrismaClient'
+import client from '@/lib/exportPrismaClient'
 
 export const auth = lucia({
   adapter: prisma(client,{
