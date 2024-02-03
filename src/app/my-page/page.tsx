@@ -1,11 +1,7 @@
-import {NextPage} from 'next';
+import { NextPage } from "next";
 
-const MyPage : NextPage = () => {
-  return(
-    <main>
-
-    </main>
-  );
-}
+const MyPage: NextPage = () => {
+  return <main></main>;
+};
 
 export default MyPage;

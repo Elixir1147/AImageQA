@@ -1,30 +1,33 @@
-'use client'
+"use client";
+import Header from "@/_components/notLoginedHeader";
+import { useRouter } from "next/router";
+import { API_BASE_URL } from "@/lib/macro";
+import { useEffect } from "react";
+import { redirect } from "next/navigation";
 
-import { registerUser } from '@/lib/registerUser';
-import Header from '@/_components/header';
-import {auth} from "@/auth/lucia"
-import * as context from "next/headers"
-import {redirect} from "next/navigation"
-
-export default async function SignUpPage(): Promise<JSX.Element | void>{
-  
-  const authRequest = auth.handleRequest("GET",context)
-  const session = await authRequest.validate()
-  if(session){
-    redirect("/")
-  }
-
+export default async function SignUpPage(): Promise<JSX.Element | void> {
   return (
     <main>
-      <Header/>
+      <Header />
       <div className="flex h-screen justify-center items-center">
-        <form className="flex flex-col" method="post" action={async(formData)=>{
-          const message= await registerUser(formData);
-          if(typeof message !== 'undefined'){
-            window.alert(message.message)
-            console.debug(message.message)
-          }
-        }}>
+        <form
+          className="flex flex-col"
+          method="post"
+          action={async (formData) => {
+            const res = await fetch(API_BASE_URL + "/api/signup", {
+              method: "POST",
+              body: formData,
+            });
+            console.debug("form");
+            console.debug(res);
+            if (res.status === 201) {
+              redirect("/");
+            } else {
+              window.alert(await res.text());
+              console.debug(res.status);
+            }
+          }}
+        >
           <a className="text-xl">会員登録</a>
           <div className="flex my-2 flex-col">
             <label htmlFor="user-name">ユーザー名</label>
@@ -32,42 +35,28 @@ export default async function SignUpPage(): Promise<JSX.Element | void>{
           </div>
           <div className="flex my-2 flex-col">
             <label htmlFor="mail-address">メールアドレス</label>
-            <input type="email" id="mail-address" name="mail-address" required></input>
+            <input
+              type="email"
+              id="mail-address"
+              name="mail-address"
+              required
+            ></input>
           </div>
           <div className="flex my-2 flex-col">
             <label htmlFor="password">パスワード</label>
-            <input type="password" id="password" name="password" required></input>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+            ></input>
           </div>
-          <input type="submit" className="my-3 bg-cyan-400 hover:bg-cyan-500 active:bg-cyan-600 text-center text-white"/>
+          <input
+            type="submit"
+            className="my-3 bg-cyan-400 hover:bg-cyan-500 active:bg-cyan-600 text-center text-white"
+          />
         </form>
       </div>
     </main>
   );
 }
-
-// export function getStaticProps():{props:{onClickFunction:()=>Promise<void>}}{
-//   const onClickFunction = async()=>{
-//     console.debug("onclick is called")
-//     const userName=document.getElementById("user-name")
-//     const mailAddress=document.getElementById("email-address")
-//     const password=document.getElementById("password")
-//     if(userName!==null && mailAddress!==null && password!==null){
-//       await fetch(
-//         "http://localhost:3000/users",{
-//           method:"POST",
-//           body:JSON.stringify({
-//             userName: (userName as HTMLInputElement).value,
-//             mailAddress: (mailAddress as HTMLInputElement).value,
-//             password: (password as HTMLInputElement).value,
-//           })
-//         }
-//       )
-//     }
-//   }
-  
-//   return {
-//     props: {
-//       onClickFunction,
-//     }
-//   }
-// }
