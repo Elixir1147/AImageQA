@@ -1,5 +1,5 @@
 "use client";
-import Header from "@/_components/header";
+import Header from "@/_components/notLoginedHeader";
 import { useRouter } from "next/router";
 import { API_BASE_URL } from "@/lib/macro";
 import { useEffect } from "react";

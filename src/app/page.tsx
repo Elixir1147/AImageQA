@@ -1,13 +1,19 @@
-import { NextPage } from 'next';
-import {Metadata} from 'next';
-import Header from '@/_components/header';
+import NotLoginedHeader from "@/_components/notLoginedHeader";
+import LoginedHeader from "./_components/loginedHeader";
+import { validateRequest } from "./lib/auth/validateRequest";
 
-const TopPage : NextPage = () => {
+export default async function TopPage(): Promise<JSX.Element> {
+  const validateResult = await validateRequest();
+  if (validateResult.user) {
+    return (
+      <main>
+        <NotLoginedHeader />
+      </main>
+    );
+  }
   return (
     <main>
-      <Header/>
+      <LoginedHeader />
     </main>
   );
 }
-
-export default TopPage;
