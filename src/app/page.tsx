@@ -4,7 +4,7 @@ import { validateRequest } from "./lib/auth/validateRequest";
 
 export default async function TopPage(): Promise<JSX.Element> {
   const validateResult = await validateRequest();
-  if (validateResult.user) {
+  if (!validateResult.user) {
     return (
       <main>
         <NotLoginedHeader />

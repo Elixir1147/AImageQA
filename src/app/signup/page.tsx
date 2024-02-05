@@ -1,9 +1,6 @@
 "use client";
 import Header from "@/_components/notLoginedHeader";
-import { useRouter } from "next/router";
 import { API_BASE_URL } from "@/lib/macro";
-import { useEffect } from "react";
-import { redirect } from "next/navigation";
 
 export default async function SignUpPage(): Promise<JSX.Element | void> {
   return (
@@ -21,7 +18,7 @@ export default async function SignUpPage(): Promise<JSX.Element | void> {
             console.debug("form");
             console.debug(res);
             if (res.status === 201) {
-              redirect("/");
+              location.assign(API_BASE_URL + "/");
             } else {
               window.alert(await res.text());
               console.debug(res.status);

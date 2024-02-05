@@ -1,22 +1,8 @@
 "use client";
 import Header from "@/_components/notLoginedHeader";
-import { useEffect } from "react";
-import { redirect } from "next/navigation";
 import { API_BASE_URL } from "@/lib/macro";
 
 export default async function LoginPage(): Promise<JSX.Element | void> {
-  // useEffect(()=>{
-  //   (async ()=>{
-  //     const res = await fetch(API_BASE_URL+'/api/session',{method: 'GET'})
-  //     const resJson = await res.json()
-  //     console.debug('useEffect')
-  //     console.debug(resJson)
-  //     if(resJson.session){
-  //       location.assign(API_BASE_URL + '/' )
-  //     }
-  //   })()
-  // },[])
-
   return (
     <main>
       <Header />
@@ -30,7 +16,7 @@ export default async function LoginPage(): Promise<JSX.Element | void> {
               body: formData,
             });
             if (res.status === 200) {
-              redirect("/");
+              location.assign(API_BASE_URL + "/");
             } else {
               window.alert(await res.text());
               console.debug(res.status);

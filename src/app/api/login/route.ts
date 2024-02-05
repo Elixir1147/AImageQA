@@ -9,7 +9,7 @@ import { user } from "db/schema";
 import { sql } from "drizzle-orm";
 import bcrypt from "bcrypt";
 
-const missingLoginResponse: NextResponse<{
+export const missingLoginResponse: NextResponse<{
   body: string;
   options: { status: number };
 }> = new NextResponse("メールアドレスまたはパスワードが違います．", {
@@ -46,17 +46,13 @@ export async function POST(
     if (!result) {
       return missingLoginResponse;
     }
-    console.log(`${existingUser[0].id}`);
     const session = await lucia.createSession(existingUser[0].id, {});
-    console.log("begin sessionCookie");
     const sessionCookie = lucia.createSessionCookie(session.id);
-    console.log("begin cookies");
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes
     );
-    console.log("end session");
     return new NextResponse("", {
       status: 200,
     });

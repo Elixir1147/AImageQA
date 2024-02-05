@@ -16,12 +16,6 @@ export const user = pgTable("user", {
   userName: text("user_name").unique().notNull(),
   mailAddress: text("mail_address").unique().notNull(),
   hashedPassword: text("hashed_password").notNull(),
-});
-
-export const userData = pgTable("userData", {
-  userName: text("user_name")
-    .references(() => user.userName)
-    .primaryKey(),
   profile: text("profile").default(""),
   alive: boolean("alive").default(true),
 });

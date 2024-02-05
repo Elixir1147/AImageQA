@@ -1,5 +1,5 @@
 import { Lucia } from "lucia";
-import { adapter } from "./drixxleAdapter";
+import { adapter } from "./drizzleAdapter";
 import "dotenv/config";
 
 export const lucia = new Lucia(adapter, {
@@ -11,8 +11,8 @@ export const lucia = new Lucia(adapter, {
   },
   getUserAttributes: (attributes) => {
     return {
-      user_name: attributes.user_name,
-      mail_address: attributes.mail_address,
+      userName: attributes.userName,
+      mailAddress: attributes.mailAddress,
     };
   },
 });
@@ -25,6 +25,6 @@ declare module "lucia" {
 }
 
 interface DatabaseUserAttributes {
-  user_name: string;
-  mail_address: string;
+  userName: string;
+  mailAddress: string;
 }

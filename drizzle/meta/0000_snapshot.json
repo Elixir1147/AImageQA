@@ -1,5 +1,5 @@
 {
-  "id": "de14ec72-3367-4b71-a6e5-fa2585bbfc07",
+  "id": "f2b66675-298d-4bc9-aa5e-709b2bb17928",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -525,6 +525,26 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "hashed_password": {
+          "name": "hashed_password",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "profile": {
+          "name": "profile",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "''"
+        },
+        "alive": {
+          "name": "alive",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         }
       },
       "indexes": {},
@@ -546,50 +566,6 @@
           ]
         }
       }
-    },
-    "userData": {
-      "name": "userData",
-      "schema": "",
-      "columns": {
-        "user_name": {
-          "name": "user_name",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "profile": {
-          "name": "profile",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "''"
-        },
-        "alive": {
-          "name": "alive",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "userData_user_name_user_user_name_fk": {
-          "name": "userData_user_name_user_user_name_fk",
-          "tableFrom": "userData",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_name"
-          ],
-          "columnsTo": [
-            "user_name"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
     }
   },
   "enums": {
