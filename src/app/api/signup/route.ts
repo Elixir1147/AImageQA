@@ -1,4 +1,4 @@
-import { lucia } from "@/lib/auth/auth";
+import { lucia } from "../../lib/auth/auth";
 import { sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { userSchema } from "@/lib/zodSchema";

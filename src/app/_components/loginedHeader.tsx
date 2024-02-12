@@ -12,7 +12,7 @@ export default function LoginedHeader(): JSX.Element {
       </Link>
       <Link
         className="hover:bg-cyan-500 text-center text-white col-end-12 col-span-1"
-        href="/question"
+        href="/questions"
       >
         質問する
       </Link>

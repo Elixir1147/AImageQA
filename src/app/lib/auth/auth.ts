@@ -1,6 +1,5 @@
 import { Lucia } from "lucia";
 import { adapter } from "./drizzleAdapter";
-import "dotenv/config";
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {

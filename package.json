@@ -8,26 +8,33 @@
     "start": "next start",
     "lint": "next lint",
     "generate": "drizzle-kit generate:pg",
-    "migrate": "tsc db/migrate.mts -t es2022 -m esnext --skipLibCheck true --moduleResolution bundler --esModuleInterop true  --outDir db && node db/migrate.mjs"
+    "migrate": "tsc db/migrate.mts -t es2022 -m esnext --skipLibCheck true --moduleResolution bundler --esModuleInterop true  --outDir db && node db/migrate.mjs",
+    "proxy": "fastify start reverse-proxy/dist/app.mjs",
+    "proxy-compile":"tsc reverse-proxy/app.mts -t es2022 -m esnext --moduleResolution bundler --esModuleInterop true  --outDir reverse-proxy/dist"
   },
   "dependencies": {
     "@lucia-auth/adapter-drizzle": "^1.0.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.1",
     "drizzle-orm": "^0.29.3",
+    "fastify": "^4.0.0",
+    "fastify-cli": "^6.1.0",
+    "fastify-plugin": "^4.5.1",
     "lucia": "^3.0.1",
     "next": "14.0.3",
     "next-connect": "^1.0.0",
     "oslo": "^1.0.3",
     "postgres": "^3.4.3",
+    "quill": "^1.3.7",
     "react": "^18",
     "react-dom": "^18",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
-    "@types/node": "^20",
+    "@types/node": "^20.11.16",
     "@types/pg": "^8.11.0",
+    "@types/quill": "^2.0.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
@@ -37,6 +44,6 @@
     "postcss": "^8",
     "prettier": "^3.2.4",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5"
+    "typescript": "^5.3.3"
   }
 }

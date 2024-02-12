@@ -1,5 +1,5 @@
-import { validateRequest } from "@/lib/auth/validateRequest";
-import { lucia } from "@/lib/auth/auth";
+import { validateRequest } from "../../lib/auth/validateRequest";
+import { lucia } from "../../lib/auth/auth";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
