@@ -1,11 +1,11 @@
-import {NextPage} from 'next';
+import LoginedHeader from "@/_components/loginedHeader";
+import QuestionForm from "./questionForm";
 
-const ImageView : NextPage = () => {
-  return(
+export default function QuestionPage(): JSX.Element {
+  return (
     <main>
-
+      <LoginedHeader />
+      <QuestionForm />
     </main>
   );
 }
-
-export default ImageView;

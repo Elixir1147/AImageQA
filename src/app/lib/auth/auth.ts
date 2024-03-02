@@ -1,6 +1,5 @@
 import { Lucia } from "lucia";
-import { adapter } from "./drixxleAdapter";
-import "dotenv/config";
+import { adapter } from "./drizzleAdapter";
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -11,8 +10,8 @@ export const lucia = new Lucia(adapter, {
   },
   getUserAttributes: (attributes) => {
     return {
-      user_name: attributes.user_name,
-      mail_address: attributes.mail_address,
+      userName: attributes.userName,
+      mailAddress: attributes.mailAddress,
     };
   },
 });
@@ -25,6 +24,6 @@ declare module "lucia" {
 }
 
 interface DatabaseUserAttributes {
-  user_name: string;
-  mail_address: string;
+  userName: string;
+  mailAddress: string;
 }

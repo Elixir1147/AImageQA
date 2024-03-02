@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LogoutButton from "./logoutButton";
 
 export default function LoginedHeader(): JSX.Element {
   return (
@@ -10,11 +11,14 @@ export default function LoginedHeader(): JSX.Element {
         I
       </Link>
       <Link
-        className="hover:bg-cyan-500 text-center text-white col-end-13 col-span-1"
-        href="/my-page"
+        className="hover:bg-cyan-500 text-center text-white col-end-12 col-span-1"
+        href="/questions"
       >
-        マイページ
+        質問する
       </Link>
+      <LogoutButton className="hover:bg-cyan-500 text-center text-white col-end-13 col-span-1">
+        ログアウト
+      </LogoutButton>
     </div>
   );
 }

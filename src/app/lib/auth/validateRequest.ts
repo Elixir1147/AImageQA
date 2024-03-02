@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 
 import type { Session, User } from "lucia";
-import { lucia } from "@/lib/auth/auth";
+import { lucia } from "./auth";
 
 export const validateRequest = cache(
   async (): Promise<

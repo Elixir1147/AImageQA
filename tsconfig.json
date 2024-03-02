@@ -23,6 +23,6 @@
       "db/*": ["./db/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "proxy/app.mts", "proxy/validateRequest.mts", "proxy/auth/auth.mts", "proxy/auth/drizzleAdapter.mts", "proxy/auth/validateRequest.mts", "db/schema.mjs"],
   "exclude": ["node_modules"]
 }

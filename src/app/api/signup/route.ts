@@ -1,18 +1,18 @@
-import { lucia } from "@/lib/auth/auth";
+import { lucia } from "../../lib/auth/auth";
 import { sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { userSchema } from "@/lib/zodSchema";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import handleAuthUserError from "@/lib/handleAuthUserError";
+import handleAuthUserError from "@/lib/handleSubmitError";
 import bcrypt from "bcrypt";
-import { user } from "db/schema";
+import { user } from "db/schema.mjs";
 import { generateId } from "lucia";
 import { HALF_ALPHANUMERIC_SYMBOLS_REGEX } from "@/lib/macro";
+import postgres from "postgres";
+import { POSTGRES_ERRORCODE_UNIQUE_VIOLATION } from "@/lib/postgresErrorCode";
 
-export async function POST(
-  req: Request
-): Promise<NextResponse<{ body: string; options: { status: number } }>> {
+export async function POST(req: Request): Promise<NextResponse<string>> {
   try {
     const formData = await req.formData();
     const { userName, mailAddress, password } = userSchema.parse({
@@ -20,24 +20,6 @@ export async function POST(
       mailAddress: formData.get("mail-address"),
       password: formData.get("password"),
     });
-    const sameUserName = await db
-      .select()
-      .from(user)
-      .where(sql`${userName} = ${user.userName}`);
-    if (sameUserName.length !== 0) {
-      return new NextResponse("同じユーザ名が使用されています．", {
-        status: 400,
-      });
-    }
-    const sameMailAddress = await db
-      .select()
-      .from(user)
-      .where(sql`${mailAddress} = ${user.mailAddress}`);
-    if (sameMailAddress.length !== 0) {
-      return new NextResponse("同じメールアドレスが使用されています．", {
-        status: 400,
-      });
-    }
     if (password.match(HALF_ALPHANUMERIC_SYMBOLS_REGEX) !== null) {
       return new NextResponse(
         "パスワードは，半角英数字と記号以外入力できません．",
@@ -69,6 +51,20 @@ export async function POST(
       status: 201,
     });
   } catch (e) {
+    if (e instanceof postgres.PostgresError) {
+      if (e.code === POSTGRES_ERRORCODE_UNIQUE_VIOLATION) {
+        switch (e.constraint_name) {
+          case "user_user_name_unique":
+            return new NextResponse("同じユーザ名が使用されています．", {
+              status: 400,
+            });
+          case "user_mail_address_unique":
+            return new NextResponse("同じメールアドレスが使用されています．", {
+              status: 400,
+            });
+        }
+      }
+    }
     return handleAuthUserError(e);
   }
 }
