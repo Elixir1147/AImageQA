@@ -2,16 +2,14 @@ import { lucia } from "../../lib/auth/auth";
 import { userSchema } from "@/lib/zodSchema";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import handleAuthUserError from "@/lib/handleAuthUserError";
+import handleAuthUserError from "@/lib/handleSubmitError";
 import { db } from "@/lib/db";
 import { HALF_ALPHANUMERIC_SYMBOLS_REGEX } from "@/lib/macro";
-import { user } from "db/schema";
+import { user } from "db/schema.mjs";
 import { sql } from "drizzle-orm";
 import bcrypt from "bcrypt";
 
-export async function POST(
-  req: Request
-): Promise<NextResponse<{ body: string; options: { status: number } }>> {
+export async function POST(req: Request): Promise<NextResponse<string>> {
   try {
     const formData = await req.formData();
     const { mailAddress, password } = userSchema

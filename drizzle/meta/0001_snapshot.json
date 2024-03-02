@@ -1,6 +1,6 @@
 {
-  "id": "194037a0-483d-410a-9d93-e7ce83de621f",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "508d078c-b7e4-49d3-aa4a-8b0c36a35f9f",
+  "prevId": "194037a0-483d-410a-9d93-e7ce83de621f",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -19,13 +19,13 @@
           "name": "question_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "user_name": {
           "name": "user_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "content": {
           "name": "content",
@@ -37,14 +37,14 @@
           "name": "post_date",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "updated_date": {
           "name": "updated_date",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         }
       },
@@ -88,13 +88,13 @@
           "name": "user_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "questionId": {
           "name": "questionId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
@@ -152,20 +152,20 @@
           "name": "comment_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "user_name": {
           "name": "user_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "answer_id": {
           "name": "answer_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "comment": {
@@ -178,14 +178,14 @@
           "name": "comment_date",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "updated_date": {
           "name": "updated_date",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         }
       },
@@ -231,20 +231,20 @@
           "name": "user_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "answer_id": {
           "name": "answer_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "evaluation": {
           "name": "evaluation",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": 0
         }
       },
@@ -303,7 +303,7 @@
           "name": "user_name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "content": {
           "name": "content",
@@ -315,7 +315,7 @@
           "name": "view_number",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": 0
         },
         "restricted": {
@@ -328,14 +328,14 @@
           "name": "post_date",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "updated_date": {
           "name": "updated_date",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         }
       },
@@ -374,13 +374,13 @@
           "name": "questionId",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "tag_id": {
           "name": "tag_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
@@ -535,14 +535,14 @@
           "name": "profile",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "''"
         },
         "alive": {
           "name": "alive",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": true
         }
       },

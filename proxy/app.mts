@@ -62,6 +62,21 @@ fastify.register(proxy, {
   },
 });
 
+fastify.register(proxy, {
+  upstream: NEXT_BASE_URL,
+  prefix: "/question",
+  rewritePrefix: "/question",
+  httpMethods: ["GET"],
+  preHandler: async (req: FastifyRequest, rep: FastifyReply) => {
+    const result = await validateRequest(req, rep);
+    if (result.user) {
+      console.log("redirect from question");
+      return rep.redirect("/");
+    }
+    console.log("question");
+  },
+});
+
 console.log(process.env.POSTGRES_USER);
 
 fastify.listen({ port: 4000 }, function (err, address) {

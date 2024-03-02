@@ -3,9 +3,7 @@ import { lucia } from "../../lib/auth/auth";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function GET(): Promise<
-  NextResponse<{ body: string; options: { status: number } }>
-> {
+export async function GET(): Promise<NextResponse<string>> {
   const { session } = await validateRequest();
 
   if (!session) {

@@ -2,7 +2,7 @@
 import { LexicalEditor } from "lexical";
 import PlaygroundEditor from "./editor/playgroundEditor";
 import { useRef } from "react";
-import { EditorStateContext } from "./editorStateContext";
+import { EditorStateContext } from "../lib/editorStateContext";
 import TestButton from "./testButton";
 
 export default function TestEditor(): JSX.Element {

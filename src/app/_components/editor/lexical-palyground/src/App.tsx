@@ -30,11 +30,11 @@ import PlaygroundEditorTheme from "./themes/PlaygroundEditorTheme";
 import { EditorRefPlugin } from "@lexical/react/LexicalEditorRefPlugin";
 import { LexicalEditor } from "lexical";
 import { MutableRefObject } from "react";
-import { EditorStateContext } from "@/_components/editorStateContext";
+import { EditorStateContext } from "@/lib/editorStateContext";
 
-console.warn(
-  "If you are profiling the playground app, please ensure you turn off the debug view. You can disable it by pressing on the settings control in the bottom-left of your screen and toggling the debug view setting."
-);
+// console.warn(
+//   "If you are profiling the playground app, please ensure you turn off the debug view. You can disable it by pressing on the settings control in the bottom-left of your screen and toggling the debug view setting."
+// );
 
 // function prepopulatedRichText() {
 //   const root = $getRoot();
