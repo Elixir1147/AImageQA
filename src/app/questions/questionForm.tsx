@@ -1,9 +1,15 @@
 "use client";
 import { LexicalEditor } from "lexical";
-import PlaygroundEditor from "@/_components/editor/playgroundEditor";
 import { useRef } from "react";
-import { EditorStateContext } from "../lib/editorStateContext";
 import { API_BASE_URL } from "@/lib/macro";
+import dynamic from "next/dynamic";
+
+const PlaygroundEditor = dynamic(
+  () => import("../_components/editor/lexical-palyground/src/App"),
+  {
+    ssr: false,
+  }
+);
 
 export default function QuestionForm(): JSX.Element {
   const refEditorState = useRef<LexicalEditor | null>(null);
@@ -11,17 +17,21 @@ export default function QuestionForm(): JSX.Element {
     <form
       method="post"
       action={async (formData) => {
-        const editorJSON = refEditorState.current?.getEditorState().toJSON();
-        formData.append("editorState", JSON.stringify(editorJSON));
-        const res = await fetch(API_BASE_URL + "/api/question", {
-          method: "POST",
-          body: formData,
-        });
-        if (res.status === 200) {
-          location.assign(API_BASE_URL + "/");
+        const editorState = refEditorState.current?.getEditorState();
+        if (editorState) {
+          formData.append("editorState", JSON.stringify(editorState));
+          const res = await fetch(API_BASE_URL + "/api/question", {
+            method: "POST",
+            body: formData,
+          });
+          if (res.status === 200) {
+            location.assign(API_BASE_URL + "/");
+          } else {
+            window.alert(await res.text());
+            console.debug(res.status);
+          }
         } else {
-          window.alert(await res.text());
-          console.debug(res.status);
+          window.alert("送信が失敗しました．");
         }
       }}
     >
@@ -40,9 +50,7 @@ export default function QuestionForm(): JSX.Element {
         </div>
         <div className={"col-start-2 col-end-6"}>
           <label>質問内容</label>
-          <EditorStateContext.Provider value={refEditorState}>
-            <PlaygroundEditor />
-          </EditorStateContext.Provider>
+          <PlaygroundEditor refEditorState={refEditorState} />
           <input
             type="submit"
             value="質問する"

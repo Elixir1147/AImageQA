@@ -1,50 +1,50 @@
 CREATE TABLE IF NOT EXISTS "answer" (
 	"answer_id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"question_id" uuid,
-	"user_name" text,
+	"question_id" uuid NOT NULL,
+	"user_name" text NOT NULL,
 	"content" jsonb NOT NULL,
-	"post_date" timestamp with time zone DEFAULT now(),
-	"updated_date" timestamp with time zone DEFAULT now()
+	"post_date" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_date" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "bookMark" (
-	"user_name" text,
-	"questionId" uuid,
+	"user_name" text NOT NULL,
+	"questionId" uuid NOT NULL,
 	CONSTRAINT "bookMark_user_name_questionId_pk" PRIMARY KEY("user_name","questionId")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "comment" (
-	"comment_id" uuid DEFAULT gen_random_uuid(),
-	"user_name" text,
-	"answer_id" uuid DEFAULT gen_random_uuid(),
+	"comment_id" uuid DEFAULT gen_random_uuid() NOT NULL,
+	"user_name" text NOT NULL,
+	"answer_id" uuid DEFAULT gen_random_uuid() NOT NULL,
 	"comment" text NOT NULL,
-	"comment_date" timestamp with time zone DEFAULT now(),
-	"updated_date" timestamp with time zone DEFAULT now(),
+	"comment_date" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_date" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "comment_user_name_answer_id_pk" PRIMARY KEY("user_name","answer_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "evaluation" (
-	"user_name" text,
-	"answer_id" uuid DEFAULT gen_random_uuid(),
-	"evaluation" integer DEFAULT 0,
+	"user_name" text NOT NULL,
+	"answer_id" uuid DEFAULT gen_random_uuid() NOT NULL,
+	"evaluation" integer DEFAULT 0 NOT NULL,
 	CONSTRAINT "evaluation_user_name_answer_id_pk" PRIMARY KEY("user_name","answer_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "question" (
 	"question_id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" text NOT NULL,
-	"user_name" text,
+	"user_name" text NOT NULL,
 	"content" jsonb NOT NULL,
-	"view_number" integer DEFAULT 0,
+	"view_number" integer DEFAULT 0 NOT NULL,
 	"restricted" boolean NOT NULL,
-	"post_date" timestamp with time zone DEFAULT now(),
-	"updated_date" timestamp with time zone DEFAULT now(),
+	"post_date" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_date" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "question_title_unique" UNIQUE("title")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "questionToTag" (
-	"questionId" uuid,
-	"tag_id" uuid,
+	"questionId" uuid NOT NULL,
+	"tag_id" uuid NOT NULL,
 	CONSTRAINT "questionToTag_questionId_tag_id_pk" PRIMARY KEY("questionId","tag_id")
 );
 --> statement-breakpoint
@@ -65,8 +65,8 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"user_name" text NOT NULL,
 	"mail_address" text NOT NULL,
 	"hashed_password" text NOT NULL,
-	"profile" text DEFAULT '',
-	"alive" boolean DEFAULT true,
+	"profile" text DEFAULT '' NOT NULL,
+	"alive" boolean DEFAULT true NOT NULL,
 	CONSTRAINT "user_user_name_unique" UNIQUE("user_name"),
 	CONSTRAINT "user_mail_address_unique" UNIQUE("mail_address")
 );

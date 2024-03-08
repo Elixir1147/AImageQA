@@ -1,9 +1,15 @@
+import { db } from "@/lib/db";
+import { answer } from "db/schema.mjs";
+import { sql } from "drizzle-orm";
+import { NextResponse } from "next/server";
+
 export async function POST(req: Request) {
-  console.log(await req.formData());
-  // const json = await req.json();
-  // console.log(json);
-  // console.log(json.formData);
-  return new Response("", {
+  const questions = await db
+    .select({ userName: answer.userName, content: answer.content })
+    .from(answer)
+    .where(sql``);
+  console.log(questions);
+  return NextResponse.json(questions, {
     status: 200,
   });
 }

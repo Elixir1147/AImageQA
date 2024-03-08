@@ -2,11 +2,43 @@ import { questionSchema } from "@/lib/zodSchema";
 import { validateRequest } from "@/lib/auth/validateRequest";
 import { db } from "@/lib/db";
 import { question, tag, questionToTag } from "db/schema.mjs";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import handleSubmitError from "@/lib/handleSubmitError";
 import postgres from "postgres";
 import { POSTGRES_ERRORCODE_UNIQUE_VIOLATION } from "@/lib/postgresErrorCode";
 import { z } from "zod";
+import { desc, asc } from "drizzle-orm";
+import { sql } from "drizzle-orm";
+
+export async function GET(
+  req: NextRequest
+): Promise<NextResponse<{ title: string; id: string }[]>> {
+  try {
+    const queryParam = req.nextUrl.searchParams;
+    if (queryParam.get("order") === "asc") {
+      const questions = await db
+        .select({ title: question.title, id: question.questionId })
+        .from(question)
+        .orderBy(desc(question.postDate));
+      return NextResponse.json(questions, { status: 200 });
+    } else if (queryParam.get("order") === "desc") {
+      const questions = await db
+        .select({ title: question.title, id: question.questionId })
+        .from(question)
+        .orderBy(asc(question.postDate));
+      return NextResponse.json(questions, { status: 200 });
+    } else {
+      return NextResponse.json([], { status: 400 });
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      console.error(e.message);
+    } else {
+      console.log("unknown database Error");
+    }
+    return NextResponse.json([], { status: 500 });
+  }
+}
 
 export async function POST(req: Request): Promise<NextResponse<string>> {
   try {

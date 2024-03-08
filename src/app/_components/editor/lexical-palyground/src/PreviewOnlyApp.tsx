@@ -17,7 +17,7 @@ import * as React from "react";
 import { SettingsContext, useSettings } from "./context/SettingsContext";
 import { SharedAutocompleteContext } from "./context/SharedAutocompleteContext";
 import { SharedHistoryContext } from "./context/SharedHistoryContext";
-import Editor from "./Editor";
+import Editor from "./PreviewOnly";
 // import logo from './images/logo.svg';
 import PlaygroundNodes from "./nodes/PlaygroundNodes";
 // import DocsPlugin from './plugins/DocsPlugin';
@@ -30,23 +30,23 @@ import PlaygroundEditorTheme from "./themes/PlaygroundEditorTheme";
 import { EditorRefPlugin } from "@lexical/react/LexicalEditorRefPlugin";
 import { LexicalEditor } from "lexical";
 import { MutableRefObject } from "react";
-import { EditorStateContext } from "@/lib/editorStateContext";
+import { SerializedEditorState } from "lexical";
+import { SerializedLexicalNode } from "lexical";
 
 // console.warn(
 //   "If you are profiling the playground app, please ensure you turn off the debug view. You can disable it by pressing on the settings control in the bottom-left of your screen and toggling the debug view setting."
 // );
 
-function App(): JSX.Element {
-  const {
-    settings: { isCollab, emptyEditor, measureTypingPerf },
-  } = useSettings();
+function App({
+  serializedEditorState,
+}: {
+  serializedEditorState: SerializedEditorState<SerializedLexicalNode>;
+}): JSX.Element {
+  // const {
+  //   settings: { isCollab, emptyEditor, measureTypingPerf },
+  // } = useSettings();
   const initialConfig = {
-    editorState: isCollab
-      ? null
-      : emptyEditor
-        ? undefined
-        : //prepopulatedRichText,
-          undefined,
+    editorState: JSON.stringify(serializedEditorState),
     namespace: "Playground",
     nodes: [...PlaygroundNodes],
     onError: (error: Error) => {
@@ -55,7 +55,6 @@ function App(): JSX.Element {
     theme: PlaygroundEditorTheme,
     editable: false,
   };
-  const refEditorState = React.useContext(EditorStateContext);
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <SharedHistoryContext>
@@ -67,17 +66,18 @@ function App(): JSX.Element {
           </SharedAutocompleteContext>
         </TableContext>
       </SharedHistoryContext>
-      {refEditorState !== null && (
-        <EditorRefPlugin editorRef={refEditorState} />
-      )}
     </LexicalComposer>
   );
 }
 
-export default function PlaygroundApp(): JSX.Element {
+export default function PreviewAricle({
+  serializedEditorState,
+}: {
+  serializedEditorState: SerializedEditorState<SerializedLexicalNode>;
+}): JSX.Element {
   return (
     <SettingsContext>
-      <App />
+      <App serializedEditorState={serializedEditorState} />
     </SettingsContext>
   );
 }
