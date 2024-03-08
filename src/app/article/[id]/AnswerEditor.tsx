@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { LexicalEditor } from "lexical";
-import { API_BASE_URL } from "@/lib/macro";
+import { FRONT_API_BASE_URL } from "@/lib/macro";
 import dynamic from "next/dynamic";
 const Editor = dynamic(
   () => import("../../_components/editor/lexical-palyground/src/App"),
@@ -20,7 +20,7 @@ export default function AnswerEditor({ id }: { id: string }): JSX.Element {
         if (editorState) {
           formData.append("questionId", id);
           formData.append("editorState", JSON.stringify(editorState));
-          const res = await fetch(API_BASE_URL + "/api/answer", {
+          const res = await fetch(FRONT_API_BASE_URL + "/api/answer", {
             method: "POST",
             body: formData,
           });

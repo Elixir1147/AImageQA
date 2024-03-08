@@ -15,7 +15,6 @@ export async function GET(
 ): Promise<NextResponse<{ userName: string; content: any }[]>> {
   try {
     const queryParam = req.nextUrl.searchParams;
-    console.log("before queryOrder");
     let queryOrder: SQL<unknown>;
     if (queryParam.get("order") === "asc") {
       queryOrder = asc(answer.postDate);
@@ -31,8 +30,6 @@ export async function GET(
     } else {
       condition = sql`true`;
     }
-    console.log(condition);
-    console.log(queryOrder);
     const questions = await db
       .select({
         userName: answer.userName,

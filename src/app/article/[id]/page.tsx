@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/lib/macro";
+import { SERVER_API_BASE_URL } from "@/lib/macro";
 import { notFound } from "next/navigation";
 import { SerializedEditorState, SerializedLexicalNode } from "lexical";
 import dynamic from "next/dynamic";
@@ -14,12 +14,14 @@ const PreviewAricle = dynamic(
 );
 
 import AnswerEditor from "./AnswerEditor";
+import { validateRequest } from "@/lib/auth/validateRequest";
 
 export default async function ArticlePage({
   params,
 }: {
   params: { id: string };
 }): Promise<JSX.Element> {
+  const validateResult = await validateRequest();
   const NOT_FOUND = "the question of the id is not found.";
   const articleData:
     | {
@@ -28,7 +30,7 @@ export default async function ArticlePage({
         content: unknown;
         viewNumber: number;
       }
-    | string = await fetch(API_BASE_URL + "/api/question/" + params.id, {
+    | string = await fetch(SERVER_API_BASE_URL + "/api/question/" + params.id, {
     cache: "no-cache",
   })
     .then((res) => {
@@ -55,7 +57,7 @@ export default async function ArticlePage({
         answerId: string;
       }[]
     | string = await fetch(
-    API_BASE_URL +
+    SERVER_API_BASE_URL +
       "/api/answer/?" +
       new URLSearchParams({ order: "desc", questionId: params.id }),
     { cache: "no-cache" }
@@ -76,13 +78,6 @@ export default async function ArticlePage({
       console.error(e);
       return "error is occured.";
     });
-  console.log(answerData);
-  console.log(
-    API_BASE_URL +
-      "/api/answer/?" +
-      new URLSearchParams({ order: "desc", questionId: params.id })
-  );
-
   if (articleData === NOT_FOUND) {
     notFound();
   } else if (typeof articleData === "string") {
@@ -102,7 +97,11 @@ export default async function ArticlePage({
               <AnswerList answerData={answerData} />
             </div>
             <div className={"my-10"}>
-              <AnswerEditor id={params.id} />
+              {validateResult.user ? (
+                <AnswerEditor id={params.id} />
+              ) : (
+                "回答するには，ログインが必要です．"
+              )}
             </div>
           </div>
         </div>

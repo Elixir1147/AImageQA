@@ -1,11 +1,11 @@
 import Header from "./_components/Header";
 import QuestionList from "./_components/questionList";
-import { API_BASE_URL } from "./lib/macro";
+import { SERVER_API_BASE_URL } from "./lib/macro";
 
 export default async function TopPage(): Promise<JSX.Element> {
   try {
     const questions: { title: string; id: string }[] | string = await fetch(
-      API_BASE_URL +
+      SERVER_API_BASE_URL +
         "/api/question/?" +
         new URLSearchParams({ order: "desc" }).toString(),
       {

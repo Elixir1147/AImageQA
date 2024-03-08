@@ -10,8 +10,6 @@ import {
   jsonb,
   customType,
 } from "drizzle-orm/pg-core";
-import { SerializedEditorState } from "lexical";
-import { SerializedLexicalNode } from "lexical";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),

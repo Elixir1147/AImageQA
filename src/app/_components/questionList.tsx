@@ -1,5 +1,5 @@
 import QuestionTitleCard from "./questionTitleCard";
-import { API_BASE_URL } from "@/lib/macro";
+import { FRONT_API_BASE_URL } from "@/lib/macro";
 export default async function QuestionList({
   questions,
 }: {
@@ -8,7 +8,7 @@ export default async function QuestionList({
   const questionList = questions.map((question) => (
     <QuestionTitleCard
       key={question.id}
-      link={API_BASE_URL + "/article/" + question.id}
+      link={FRONT_API_BASE_URL + "/article/" + question.id}
     >
       {question.title}
     </QuestionTitleCard>

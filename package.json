@@ -8,9 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "generate": "drizzle-kit generate:pg",
-    "migrate": "tsc db/migrate.mts -t es2022 -m esnext --skipLibCheck true --moduleResolution bundler --esModuleInterop true  --outDir db && node db/migrate.mjs",
-    "proxy": "fastify start reverse-proxy/dist/app.mjs",
-    "proxy-compile": "tsc reverse-proxy/app.mts -t es2022 -m esnext --moduleResolution bundler --esModuleInterop true  --outDir reverse-proxy/dist"
+    "migrate": "tsc db/migrate.mts -t es2022 -m esnext --skipLibCheck true --moduleResolution bundler --esModuleInterop true  --outDir db && node db/migrate.mjs"
   },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.17.3",

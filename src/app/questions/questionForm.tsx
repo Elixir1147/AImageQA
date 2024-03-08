@@ -1,7 +1,7 @@
 "use client";
 import { LexicalEditor } from "lexical";
 import { useRef } from "react";
-import { API_BASE_URL } from "@/lib/macro";
+import { FRONT_API_BASE_URL } from "@/lib/macro";
 import dynamic from "next/dynamic";
 
 const PlaygroundEditor = dynamic(
@@ -20,12 +20,12 @@ export default function QuestionForm(): JSX.Element {
         const editorState = refEditorState.current?.getEditorState();
         if (editorState) {
           formData.append("editorState", JSON.stringify(editorState));
-          const res = await fetch(API_BASE_URL + "/api/question", {
+          const res = await fetch(FRONT_API_BASE_URL + "/api/question", {
             method: "POST",
             body: formData,
           });
           if (res.status === 200) {
-            location.assign(API_BASE_URL + "/");
+            location.assign(FRONT_API_BASE_URL + "/");
           } else {
             window.alert(await res.text());
             console.debug(res.status);
