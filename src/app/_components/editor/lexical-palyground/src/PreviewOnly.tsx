@@ -133,6 +133,7 @@ export default function Editor(): JSX.Element {
         <EmojisPlugin />
         <HashtagPlugin />
         <KeywordsPlugin />
+
         {/* <SpeechToTextPlugin /> */}
         <AutoLinkPlugin />
         {/* <CommentPlugin providerFactory={undefined} /> */}
@@ -163,6 +164,7 @@ export default function Editor(): JSX.Element {
         <InlineImagePlugin />
         <LinkPlugin />
         <PollPlugin />
+
         {/* <TwitterPlugin /> */}
         {/* <YouTubePlugin /> */}
         {/* <FigmaPlugin /> */}
@@ -188,7 +190,7 @@ export default function Editor(): JSX.Element {
               anchorElem={floatingAnchorElem}
               cellMerge={true}
             />
-            <FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} />
+            {/* <FloatingTextFormatToolbarPlugin anchorElem={floatingAnchorElem} /> */}
           </>
         )}
         {(isCharLimit || isCharLimitUtf8) && (

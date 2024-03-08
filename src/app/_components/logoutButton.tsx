@@ -1,5 +1,5 @@
 "use client";
-import { API_BASE_URL } from "@/lib/macro";
+import { FRONT_API_BASE_URL } from "@/lib/macro";
 export default function LogoutButton(props: {
   children: string;
   className: string;
@@ -8,12 +8,12 @@ export default function LogoutButton(props: {
     <button
       className={props.className}
       onClick={async (e) => {
-        const result = await fetch(API_BASE_URL + "/api/logout", {
+        const result = await fetch(FRONT_API_BASE_URL + "/api/logout", {
           method: "get",
         });
 
         if (result.status === 200) {
-          location.assign(API_BASE_URL + "/");
+          location.assign(FRONT_API_BASE_URL + "/");
         } else {
           window.alert("ログアウトに失敗しました．");
         }

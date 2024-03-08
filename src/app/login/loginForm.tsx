@@ -1,5 +1,5 @@
 "use client";
-import { API_BASE_URL } from "@/lib/macro";
+import { FRONT_API_BASE_URL } from "@/lib/macro";
 
 export default function LoginForm(): JSX.Element {
   return (
@@ -7,12 +7,12 @@ export default function LoginForm(): JSX.Element {
       className="flex flex-col"
       method="post"
       action={async (formData) => {
-        const res = await fetch(API_BASE_URL + "/api/login", {
+        const res = await fetch(FRONT_API_BASE_URL + "/api/login", {
           method: "POST",
           body: formData,
         });
         if (res.status === 200) {
-          location.assign(API_BASE_URL + "/");
+          location.assign(FRONT_API_BASE_URL + "/");
         } else {
           window.alert(await res.text());
           console.debug(res.status);

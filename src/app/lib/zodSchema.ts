@@ -21,3 +21,8 @@ export const questionSchema = z.object({
   userName: z.string(),
   restricted: z.boolean(),
 });
+
+export const answerSchema = z.object({
+  userName: z.string(),
+  questionId: z.string(),
+});

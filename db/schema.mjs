@@ -8,6 +8,7 @@ import {
   timestamp,
   primaryKey,
   jsonb,
+  customType,
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
