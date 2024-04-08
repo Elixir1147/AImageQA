@@ -1,12 +1,19 @@
 # AImageQA
 
 ## 必要な.envファイルの例
+
 POSTGRES_PASSWORD=postgres
+
 POSTGRES_USER=postgres
+
 POSTGRES_DB=qaimage
+
 NODE_ENV = "development"
+
 NEXT_BASE_URL = "http://localhost:3000"
+
 PROXY_BASE_URL = "http://localhost:4000"
+
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/qaimage?search_path=public"
 
 ## 起動手順
