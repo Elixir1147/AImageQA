@@ -17,7 +17,8 @@ PROXY_BASE_URL = "http://localhost:4000"
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/qaimage?search_path=public"
 
 ## 起動手順
-1.　.envファイルを作成する．(特に必要が無ければ，上記の記述を利用可能．)
+
+1. .envファイルを作成する．
 2. docker-compose upでpostgresのコンテナを作成．
 3. このディレクトリで，npm run build && npm run start を実行してnextを起動する．
 4. proxyに移動して，npm run compile-startを実行してプロキシを起動する．
